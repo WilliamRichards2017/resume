@@ -32,16 +32,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-apt-
 
-      - name: Create requirements file
-        run: |
-          cat > requirements.txt << 'EOF'
-          google-auth
-          google-auth-oauthlib
-          google-auth-httplib2
-          google-api-python-client
-          pypandoc
-          EOF
-
       - name: Install Python dependencies
         run: |
           pip install --break-system-packages -r requirements.txt
