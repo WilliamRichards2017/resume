@@ -13,8 +13,8 @@ Every day at 2 AM UTC (and on-demand), a GitHub Actions workflow:
 
 ## Files
 
-- `resume.pdf` - PDF version of my resume
-- `resume.docx` - Word document version of my resume
+- `William_Richards_Resume.pdf` - PDF version of my resume
+- `William_Richards_Resume.docx` - Word document version of my resume
 - `sync_resume.py` - Python script that handles the Google Docs download
 - `.github/workflows/sync-resume.yml` - GitHub Actions workflow configuration
 

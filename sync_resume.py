@@ -24,7 +24,7 @@ def get_drive_service():
         print(f"Error authenticating with Google Drive: {e}")
         sys.exit(1)
 
-def download_as_docx(service, file_id, output_path='resume.docx'):
+def download_as_docx(service, file_id, output_path='William_Richards_Resume.docx'):
     """Download Google Doc as DOCX."""
     try:
         request = service.files().export_media(
@@ -51,7 +51,7 @@ def download_as_docx(service, file_id, output_path='resume.docx'):
         print(f"Error downloading DOCX: {e}")
         return False
 
-def download_as_pdf(service, file_id, output_path='resume.pdf'):
+def download_as_pdf(service, file_id, output_path='William_Richards_Resume.pdf'):
     """Download Google Doc as PDF."""
     try:
         request = service.files().export_media(

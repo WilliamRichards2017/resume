@@ -58,14 +58,14 @@ jobs:
 
           # Debug: Show what files were downloaded
           echo "=== Files in working directory ==="
-          ls -lah resume.* || echo "No resume files found"
+          ls -lah William_Richards_Resume.* || echo "No resume files found"
 
           # Debug: Show git status before adding
           echo "=== Git status before staging ==="
           git status
 
           # Add the resume files to staging area
-          git add resume.pdf resume.docx
+          git add William_Richards_Resume.pdf William_Richards_Resume.docx
 
           # Debug: Show git status after adding
           echo "=== Git status after staging ==="
