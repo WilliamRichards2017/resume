@@ -20,11 +20,34 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-      
-      - name: Install dependencies
+          cache: 'pip'
+
+      - name: Cache apt packages
+        uses: actions/cache@v3
+        with:
+          path: |
+            /var/cache/apt/archives
+            /var/lib/apt/lists
+          key: ${{ runner.os }}-apt-${{ hashFiles('.github/workflows/sync-resume.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-apt-
+
+      - name: Create requirements file
         run: |
-          pip install --break-system-packages google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client pypandoc
-          # Install pandoc for document conversion
+          cat > requirements.txt << 'EOF'
+          google-auth
+          google-auth-oauthlib
+          google-auth-httplib2
+          google-api-python-client
+          pypandoc
+          EOF
+
+      - name: Install Python dependencies
+        run: |
+          pip install --break-system-packages -r requirements.txt
+
+      - name: Install system dependencies
+        run: |
           sudo apt-get update
           sudo apt-get install -y pandoc texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
       
