@@ -22,16 +22,6 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
-      - name: Cache apt packages
-        uses: actions/cache@v3
-        with:
-          path: |
-            /var/cache/apt/archives
-            /var/lib/apt/lists
-          key: ${{ runner.os }}-apt-${{ hashFiles('.github/workflows/sync-resume.yml') }}
-          restore-keys: |
-            ${{ runner.os }}-apt-
-
       - name: Install Python dependencies
         run: |
           pip install --break-system-packages -r requirements.txt
