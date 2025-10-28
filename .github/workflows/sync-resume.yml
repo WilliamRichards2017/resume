@@ -31,6 +31,15 @@ jobs:
       - name: Create credentials file
         run: |
           echo '${{ secrets.GOOGLE_CREDENTIALS }}' > credentials.json
+
+          # Debug: Verify credentials file was created (without showing contents)
+          if [ -f credentials.json ]; then
+            echo "✓ credentials.json created successfully"
+            echo "  File size: $(wc -c < credentials.json) bytes"
+          else
+            echo "✗ Failed to create credentials.json"
+            exit 1
+          fi
       
       - name: Download and convert resume
         env:
@@ -43,22 +52,42 @@ jobs:
         run: |
           git config user.name "Resume Bot"
           git config user.email "bot@github.com"
-          
-          # Check if there are any changes
-          if git diff --quiet; then
-            echo "No changes detected"
+
+          # Debug: Show what files were downloaded
+          echo "=== Files in working directory ==="
+          ls -lah resume.* || echo "No resume files found"
+
+          # Debug: Show git status before adding
+          echo "=== Git status before staging ==="
+          git status
+
+          # Add the resume files to staging area
+          git add resume.pdf resume.docx
+
+          # Debug: Show git status after adding
+          echo "=== Git status after staging ==="
+          git status
+
+          # Check if there are any changes (staged or unstaged)
+          if git diff --staged --quiet; then
+            echo "=== No changes detected ==="
             echo "changes=false" >> $GITHUB_OUTPUT
           else
-            echo "Changes detected"
+            echo "=== Changes detected ==="
+            git diff --staged --stat
             echo "changes=true" >> $GITHUB_OUTPUT
           fi
       
       - name: Commit and push changes
         if: steps.check_changes.outputs.changes == 'true'
         run: |
-          git add resume.pdf resume.docx
+          # Files are already staged from the previous step
           git commit -m "Update resume from Google Docs [$(date +'%Y-%m-%d %H:%M:%S UTC')]"
+
+          echo "=== Pushing to remote ==="
           git push
+
+          echo "✓ Resume successfully synced and pushed"
       
       - name: Cleanup credentials
         if: always()
